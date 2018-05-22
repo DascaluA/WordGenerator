@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -44,6 +46,13 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         generateBtn.addActionListener(this);
 
         System.out.println(generatedTextTP);
+        alphabetTP.setText("abcdefghijklmnopqrstuvwxyz");
+        lengthTP.setText("10");
+        lengthType=0;
+        textLength=50;
+        Set<Character> alphabet = getAlphabet();
+        String ret =  generateWords(alphabet);
+        System.out.println(ret);
 
     }
 
@@ -126,6 +135,15 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         }
     }
 
+    private Set<Character> getAlphabet(){
+        Set<Character> alphabet = new HashSet<>();
+        char input [] = alphabetTP.getText().toCharArray();
+        for (char c : input) {
+            alphabet.add(c);
+        }
+        return alphabet;
+    }
+
     private String generateWords(Set<Character> alphabet){
 
         System.out.println("Entered the generator");
@@ -149,44 +167,43 @@ public class generateByAlphabet extends JFrame implements ActionListener{
     private String generateByWordNum(ArrayList<Character> alphabetAsList){
 
         System.out.println("Entered the genByWordNum");
-        ArrayList<String> words = new ArrayList<String>(textLength);
+        String words = new String();
         int alphabetLength = alphabetAsList.size();
 
         for(int i = 0; i < textLength; i++){
             Random random = new Random();
             int randomLength = new Random().nextInt(20);
             char[] word = new char[randomLength];
-
+            ArrayList<Character> myWord = new ArrayList<>();
             for(int j = 0; j < randomLength; j++) {
                 word[j] = alphabetAsList.get(random.nextInt(alphabetLength-1));
             }
-            words.add(word.toString() + ' ');
+            String myword = new String();
+            for (char c : word) {
+                words += c;
+            }
+            words += ' ';
         }
-        System.out.println(words.toString());
-        return words.toString();
+        return words;
     }
 
     private String generateByCharNum(ArrayList<Character> alphabetAsList){
-        ArrayList<String> words = new ArrayList<String>();
+        String words = new String();
         int alphabetLength = alphabetAsList.size();
         int strLen = 0;
-
         while(strLen < textLength){
             Random random = new Random();
             int randomLength = new Random().nextInt(20);
-            char[] word = new char[randomLength];
-
-            for(int j = 0; j < randomLength; j++)
+                        for(int j = 0; j < randomLength; j++)
             {
-                word[j] = alphabetAsList.get(random.nextInt(alphabetLength-1));
+                words += alphabetAsList.get(random.nextInt(alphabetLength-1));
                 if(strLen >= textLength)
                     break;
                 strLen++;
             }
-            words.add(word.toString() + ' ');
+            words += ' ';
             strLen++;
         }
-        System.out.println(words.toString());
         return words.toString();
     }
 
