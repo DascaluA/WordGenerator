@@ -12,6 +12,7 @@ public class FirstPage extends JFrame implements ActionListener{
     private JButton confirmButton;
     private JLabel infoLabel;
     private static generateByAlphabet alph = new generateByAlphabet();
+    private static generatedByFile fileGenerated = new generatedByFile();
 
     public FirstPage() {
         super.setTitle("Welcome");
@@ -70,7 +71,12 @@ public class FirstPage extends JFrame implements ActionListener{
             }
             else {
                 System.out.println("Alphabet generation method selected");
-
+                setSize(new Dimension(900,600));
+                this.remove(mainContainer);
+                this.setLayout(fileGenerated.getMainContainer().getLayout());
+                mainContainer = fileGenerated.getMainContainer();
+                this.add(mainContainer);
+                this.setLayout(new SpringLayout());
             }
 
         }
