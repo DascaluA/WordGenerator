@@ -14,18 +14,21 @@ public class generateByAlphabet extends JFrame implements ActionListener{
     private JButton saveBtn;
     private JPanel lengthContainer;
     private JPanel outputContainer;
-    private JScrollPane genText;
+    private JTextPane generatedTextTP;
     private JButton generateBtn;
     private JButton browseBtn;
-    private JScrollPane lengthInput;
+    private JScrollPane lengthSP;
     private JComboBox lengthTypeSelector;
-    private JScrollPane alphInput;
+    private JScrollPane alphabetSP;
     private JLabel infoLabel1;
     private JLabel infoLabel2;
     private JLabel infoLabel3;
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
     private JScrollBar scrollBar3;
+    private JTextPane alphabetTP;
+    private JTextPane lengthTP;
+    private JScrollPane generatedTextSP;
 
 
     private int lengthType;
@@ -40,7 +43,7 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         browseBtn.addActionListener(this);
         generateBtn.addActionListener(this);
 
-
+        System.out.println(generatedTextTP);
 
     }
 
@@ -50,43 +53,34 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         lengthContainer = new JPanel();
         outputContainer = new JPanel();
 
-        alphInput = new JScrollPane(new JTextArea());
+        alphabetTP = new JTextPane();
+        alphabetSP = new JScrollPane(alphabetTP);
         infoLabel1 = new JLabel();
         infoLabel1.setText("Input the alphabet:");
         alphabetContainer.add(infoLabel1);
-        alphabetContainer.add(alphInput);
+        alphabetContainer.add(alphabetSP);
 
         infoLabel2 = new JLabel();
         infoLabel2.setText("Input the text length");
-        lengthInput = new JScrollPane( new JTextArea());
+        lengthTP = new JTextPane();
+        lengthSP = new JScrollPane(lengthTP);
         lengthTypeSelector = new JComboBox();
         lengthTypeSelector.addItem("Words");
         lengthTypeSelector.addItem("Characters");
         lengthContainer.add(infoLabel2);
-        lengthContainer.add(lengthInput);
+        lengthContainer.add(lengthSP);
         lengthContainer.add(lengthTypeSelector);
 
 
         infoLabel3 = new JLabel();
-        JTextArea exmp = new JTextArea();
-        exmp.setText(" Swing has plenty of layout managers available — both built-in and third-party. However, most of the managers are not suitable in modern UI creation.\n" +
-                "\n" +
-                "There are three layout managers that can do the job properly:\n" +
-                "\n" +
-                "    MigLayout\n" +
-                "    GroupLayout\n" +
-                "    FormLayout\n" +
-                "\n" +
-                "MigLayout, GroupLayout, and FormLayout are powerful, flexible layout managers that can cope with most layout requirements. In this tutorial, we use GroupLayout manager to get design the user interface. ");
-        genText = new JScrollPane(exmp);
-        genText.setMaximumSize(new Dimension(300,150));
-        genText.setWheelScrollingEnabled(true);
+        generatedTextTP = new JTextPane();
+        generatedTextSP = new JScrollPane(generatedTextTP);
         browseBtn = new JButton();
         browseBtn.setText("Browse");
         saveBtn = new JButton();
         saveBtn.setText("Save");
         outputContainer.add(infoLabel3);
-        outputContainer.add(genText);
+        outputContainer.add(generatedTextTP);
         outputContainer.add(browseBtn);
         outputContainer.add(saveBtn);
 
@@ -97,12 +91,11 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         lengthContainer.setPreferredSize(new Dimension(500,150));
         outputContainer.setPreferredSize(new Dimension(500,150));
 
-
         mainContainer.add(alphabetContainer);
         mainContainer.add(lengthContainer);
         mainContainer.add(generateBtn);
         mainContainer.add(outputContainer);
-        mainContainer.setLayout(new GridLayout());
+        mainContainer.setLayout(new FlowLayout());
 
 //        SpringLayout layout = new SpringLayout();
 //        layout.addLayoutComponent("firstCtnr", alphabetContainer);
