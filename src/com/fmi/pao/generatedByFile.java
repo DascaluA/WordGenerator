@@ -1,5 +1,7 @@
 package com.fmi.pao;
 
+import jdk.internal.org.objectweb.asm.tree.MultiANewArrayInsnNode;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class generatedByFile {
+public class generatedByFile implements ActionListener{
 
     File selectedFile;
 
@@ -23,27 +25,49 @@ public class generatedByFile {
 
     private JButton chooseFileButton;
     private JFormattedTextField generationLength;
+    private JTextArea generatedTextTp;
+    private JScrollPane generatedTextSP;
+    private JLabel outputLabel;
+    private JButton generateBtn;
 
-    public generatedByFile() {
+    public generatedByFile(){
 
         setElements();
 
-        chooseFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    selectedFile = fc.getSelectedFile();
-                }
+        chooseFileButton.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == chooseFileButton){
+            JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fc.getSelectedFile();
             }
-        });
+            ArrayList<String> inputWords = readWords(selectedFile);
+            String output = generateWords(inputWords);
+            generatedTextTp.setText(output);
+
+        }
+        else if(e.getSource() == generateBtn){
+
+        }
     }
 
     private void setElements() {
         mainContainer = new JPanel();
+
+
+
         mainContainer.setLayout(new GridLayout());
         mainContainer.add(chooseFileButton);
+//        generatedTextSP.add(generatedTextTp);
+        mainContainer.add(generatedTextSP);
+        mainContainer.add(outputLabel);
+        mainContainer.add(generateBtn);
+        outputLabel.setText("Output:");
+
 
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
@@ -75,13 +99,14 @@ public class generatedByFile {
             words.add(word);
         }
 
+        System.out.println(words);
         return words;
     }
 
     private String generateWords(ArrayList<String> alphabet){
 
         String words = new String();
-        int resultSize = Integer.parseInt((String) generationLength.getValue());
+        int resultSize = Integer.parseInt((String) generationLength.getText());
 
         for(int i = 0; i < resultSize; i++){
             Random random = new Random();

@@ -25,34 +25,24 @@ public class generateByAlphabet extends JFrame implements ActionListener{
     private JLabel infoLabel1;
     private JLabel infoLabel2;
     private JLabel infoLabel3;
-    private JScrollBar scrollBar1;
-    private JScrollBar scrollBar2;
-    private JScrollBar scrollBar3;
     private JTextPane alphabetTP;
     private JTextPane lengthTP;
     private JScrollPane generatedTextSP;
-
-
-    private int lengthType;
-    private int textLength;
+    private JScrollBar scrollBar1;
+    private JScrollBar scrollBar2;
+    private JScrollBar scrollBar3;
 
     public generateByAlphabet() {
         System.out.println("Entered alph constructor");
         setElements();
-        lengthType = 0;
-        textLength = 1;
         saveBtn.addActionListener(this);
         browseBtn.addActionListener(this);
         generateBtn.addActionListener(this);
 
+        alphabetTP.setText("abcdefghijklmn");
+        lengthTP.setText("50");
+
         System.out.println(generatedTextTP);
-        alphabetTP.setText("abcdefghijklmnopqrstuvwxyz");
-        lengthTP.setText("10");
-        lengthType=0;
-        textLength=50;
-        Set<Character> alphabet = getAlphabet();
-        String ret =  generateWords(alphabet);
-        System.out.println(ret);
 
     }
 
@@ -65,9 +55,11 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         alphabetTP = new JTextPane();
         alphabetSP = new JScrollPane(alphabetTP);
         infoLabel1 = new JLabel();
+        scrollBar1 = new JScrollBar();
         infoLabel1.setText("Input the alphabet:");
         alphabetContainer.add(infoLabel1);
         alphabetContainer.add(alphabetSP);
+        alphabetContainer.add(scrollBar1);
 
         infoLabel2 = new JLabel();
         infoLabel2.setText("Input the text length");
@@ -76,20 +68,26 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         lengthTypeSelector = new JComboBox();
         lengthTypeSelector.addItem("Words");
         lengthTypeSelector.addItem("Characters");
+        scrollBar2 = new JScrollBar();
         lengthContainer.add(infoLabel2);
         lengthContainer.add(lengthSP);
         lengthContainer.add(lengthTypeSelector);
+        lengthContainer.add(scrollBar2);
 
 
         infoLabel3 = new JLabel();
         generatedTextTP = new JTextPane();
-        generatedTextSP = new JScrollPane(generatedTextTP);
+        generatedTextSP = new JScrollPane(generatedTextTP,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                                                            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollBar3 = new JScrollBar();
+        generatedTextTP.setMaximumSize(new Dimension(200,10));
         browseBtn = new JButton();
         browseBtn.setText("Browse");
         saveBtn = new JButton();
         saveBtn.setText("Save");
         outputContainer.add(infoLabel3);
-        outputContainer.add(generatedTextTP);
+        outputContainer.add(generatedTextSP);
+        outputContainer.add(scrollBar3);
         outputContainer.add(browseBtn);
         outputContainer.add(saveBtn);
 
@@ -105,16 +103,6 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         mainContainer.add(generateBtn);
         mainContainer.add(outputContainer);
         mainContainer.setLayout(new FlowLayout());
-
-//        SpringLayout layout = new SpringLayout();
-//        layout.addLayoutComponent("firstCtnr", alphabetContainer);
-//        layout.addLayoutComponent("secondCtnr", lengthContainer);
-//        layout.addLayoutComponent("thirdCtnr", generateBtn);
-//        layout.addLayoutComponent("fourthCtnr", outputContainer);
-//        layout.putConstraint(SpringLayout.NORTH);
-
-
-
     }
 
     public JPanel getMainContainer() {
@@ -128,6 +116,8 @@ public class generateByAlphabet extends JFrame implements ActionListener{
             System.out.println("Save Button Pressed");
         }
         else if(e.getSource() == generateBtn){
+            String generatedText = generateWords(getAlphabet());
+            generatedTextTP.setText(generatedText);
             System.out.println("Generate Button Pressed");
         }
         else if(e.getSource() == browseBtn){
@@ -154,10 +144,10 @@ public class generateByAlphabet extends JFrame implements ActionListener{
                 alphabetAsList.add(character);
             }
             int alphabetLength = alphabetAsList.size();
-            if(lengthType == 0){
+            if(lengthTypeSelector.getSelectedItem().toString().equalsIgnoreCase("words")){
                 ret = generateByWordNum(alphabetAsList);
             }
-            else{
+            else if(lengthTypeSelector.getSelectedItem().toString().equalsIgnoreCase("characters")){
                 ret = generateByCharNum(alphabetAsList);
             }
         }
@@ -169,7 +159,7 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         System.out.println("Entered the genByWordNum");
         String words = new String();
         int alphabetLength = alphabetAsList.size();
-
+        int textLength = Integer.parseInt(lengthTP.getText());
         for(int i = 0; i < textLength; i++){
             Random random = new Random();
             int randomLength = new Random().nextInt(20);
@@ -191,6 +181,7 @@ public class generateByAlphabet extends JFrame implements ActionListener{
         String words = new String();
         int alphabetLength = alphabetAsList.size();
         int strLen = 0;
+        int textLength = Integer.parseInt(lengthTP.getText());
         while(strLen < textLength){
             Random random = new Random();
             int randomLength = new Random().nextInt(20);
@@ -204,6 +195,7 @@ public class generateByAlphabet extends JFrame implements ActionListener{
             words += ' ';
             strLen++;
         }
+        words.trim();
         return words.toString();
     }
 
