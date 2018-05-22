@@ -20,6 +20,7 @@ import java.util.Scanner;
 public class generatedByFile implements ActionListener{
 
     File selectedFile;
+    ArrayList<String> inputWords;
 
     private JPanel mainContainer;
 
@@ -35,6 +36,7 @@ public class generatedByFile implements ActionListener{
         setElements();
 
         chooseFileButton.addActionListener(this);
+        generateBtn.addActionListener(this);
     }
 
     @Override
@@ -45,13 +47,11 @@ public class generatedByFile implements ActionListener{
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fc.getSelectedFile();
             }
-            ArrayList<String> inputWords = readWords(selectedFile);
-            String output = generateWords(inputWords);
-            generatedTextTp.setText(output);
-
+            inputWords = readWords(selectedFile);
         }
         else if(e.getSource() == generateBtn){
-
+            String output = generateWords(inputWords);
+            generatedTextTp.setText(output);
         }
     }
 
@@ -66,6 +66,7 @@ public class generatedByFile implements ActionListener{
         mainContainer.add(generatedTextSP);
         mainContainer.add(outputLabel);
         mainContainer.add(generateBtn);
+        generateBtn.setText("Generate");
         outputLabel.setText("Output:");
 
 
@@ -106,7 +107,9 @@ public class generatedByFile implements ActionListener{
     private String generateWords(ArrayList<String> alphabet){
 
         String words = new String();
-        int resultSize = Integer.parseInt((String) generationLength.getText());
+        String length = (String) generationLength.getText();
+        length = length.isEmpty() ? "0" : length;
+        int resultSize = Integer.parseInt(length);
 
         for(int i = 0; i < resultSize; i++){
             Random random = new Random();
